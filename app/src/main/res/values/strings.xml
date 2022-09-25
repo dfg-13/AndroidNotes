@@ -6,4 +6,5 @@
     <string name="save">Save</string>
     <string name="about">About</string>
     <string name="add">Add</string>
+    <string name="datetime">dateTime</string>
 </resources>
