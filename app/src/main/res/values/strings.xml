@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Android Notes</string>
+    <string name="android_notes">Android Notes</string>
+    <string name="copyright_name_year">©2022, David Galicia</string>
+    <string name="versionNum">Version 1.0</string>
+    <string name="save">Save</string>
+    <string name="about">About</string>
+    <string name="add">Add</string>
+</resources>
