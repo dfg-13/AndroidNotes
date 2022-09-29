@@ -1,7 +1,9 @@
 package com.example.androidnotes;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -12,15 +14,34 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener, View.OnLongClickListener{
 
     private RecyclerView recyclerView;
 
+    private MyAdapter mAdapter;
+
+    private final List<Note> noteList = new ArrayList<>();
+
+    private LinearLayoutManager linearLayoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        recyclerView = findViewById(R.id.recycler);
+        mAdapter = new MyAdapter(noteList, this);
+        recyclerView.setAdapter(mAdapter);
+
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+
+
     }
 
     @Override
@@ -28,6 +49,29 @@ public class MainActivity extends AppCompatActivity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_1, menu);
         return true;
+    }
+
+    public List<Note> load(){
+        List<Note> noteLst = new ArrayList<>();
+
+        return noteLst;
+    }
+
+    public void save(){
+
+    }
+
+    public void delete(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete note?");
+
+        builder.setPositiveButton("Yes", (dialog, id) -> {
+
+        });
+        builder.setNegativeButton("No", (dialog, id) -> {});
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override
@@ -50,11 +94,13 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onClick(View view) {
+        int pos = recyclerView.getChildLayoutPosition(view);
 
     }
 
     @Override
     public boolean onLongClick(View view) {
+        int pos = recyclerView.getChildLayoutPosition(view);
         return false;
     }
 }
