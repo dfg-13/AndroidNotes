@@ -12,7 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements View.OnClickListener, View.OnLongClickListener{
 
     private RecyclerView recyclerView;
 
@@ -45,5 +46,15 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        return false;
     }
 }
