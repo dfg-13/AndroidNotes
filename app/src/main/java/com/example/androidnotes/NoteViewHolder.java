@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 public class NoteViewHolder extends RecyclerView.ViewHolder {
 
-    public TextView title;
+    TextView title;
     TextView dateTime;
     TextView summary;
 
