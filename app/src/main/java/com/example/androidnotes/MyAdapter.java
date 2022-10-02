@@ -1,5 +1,6 @@
 package com.example.androidnotes;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<NoteViewHolder>{
+    private static final String TAG = "NoteAdapter";
     private final List<Note> noteList;
     private final MainActivity mainAct;
 
@@ -19,6 +21,8 @@ public class MyAdapter extends RecyclerView.Adapter<NoteViewHolder>{
     @NonNull
     @Override
     public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Log.d(TAG, "onCreateViewHolder: MAKING NEW MyViewHolder");
+
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.note_list_row, parent, false);
 
@@ -30,6 +34,8 @@ public class MyAdapter extends RecyclerView.Adapter<NoteViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
+        Log.d(TAG, "onBindViewHolder: FILLING VIEW HOLDER Note " + position);
+
         Note note = noteList.get(position);
 
         String title = note.getTitle();
