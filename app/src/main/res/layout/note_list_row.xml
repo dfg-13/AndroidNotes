@@ -8,6 +8,7 @@
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
+    android:layout_marginBottom="8dp"
     android:paddingTop="8dp"
     android:paddingBottom="8dp">
 
@@ -24,8 +25,10 @@
         android:id="@+id/noteRowTitle"
         android:layout_width="365dp"
         android:layout_height="wrap_content"
-        android:text="Title"
-        android:textSize="16sp"
+        android:text="@string/title"
+        android:textColor="#000000"
+        android:textSize="19sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,7 +38,9 @@
         android:layout_width="365dp"
         android:layout_height="54dp"
         android:layout_marginTop="8dp"
-        android:text="TextView"
+        android:text="@string/textview"
+        android:textColor="#151515"
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dateTime" />
@@ -46,6 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/datetime"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline17"
         app:layout_constraintTop_toBottomOf="@+id/noteRowTitle" />
