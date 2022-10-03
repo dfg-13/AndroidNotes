@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,10 +20,10 @@ import java.io.PrintWriter;
 
 public class EditActivity extends AppCompatActivity {
 
-    private EditText noteTitle;
-    private EditText noteText;
-    private Note note;
-    private int pos;
+    EditText noteTitle;
+    EditText noteText;
+    Note editNote;
+    int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,43 +32,72 @@ public class EditActivity extends AppCompatActivity {
 
         noteTitle = findViewById(R.id.noteTitle);
         noteText = findViewById(R.id.noteText);
+        noteText.setMovementMethod(new ScrollingMovementMethod());//allows for scrolling capability
+
 
         Intent intent = getIntent(); //passing data to a new activity
-        if (intent.hasExtra("Note")){
-            note = (Note) intent.getSerializableExtra("Note");
-            noteTitle.setText(note.getTitle());
-            noteText.setText(note.getNoteText());
+        if (intent.hasExtra("EDIT_NOTE")){
+            editNote = (Note) intent.getSerializableExtra("EDIT_NOTE");
+            if (editNote != null){ //check to make sure the note is not empty/null
+                noteTitle.setText(editNote.getTitle());
+                noteText.setText(editNote.getNoteText());
+            }
         }
-
+        if (intent.hasExtra("Position")){
+            position = intent.getIntExtra("position", 0);
+        }
+        /*
+        if (intent.hasExtra("NEW_NOTE")){
+            noteChecker = intent.getBooleanExtra("NEW_NOTE", false);
+        }
+         */
     }
 
     public void save(){
         String title = noteTitle.getText().toString();
         String text = noteText.getText().toString();
+        Note nTemp = new Note(title, text);
 
-        if (title.trim().isEmpty()){ //no title is present
+        if (title.trim().isEmpty() && !text.isEmpty()){ //no title is present, but there is text
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setPositiveButton("Ok", (Dialog, id) -> {
-                Intent data = new Intent();
-
+            builder.setPositiveButton("Ok", (Dialog, id) -> { //Selecting Ok should close the dialog and EditActivity without saving
                 Toast.makeText(this, "Notes with no title are not saved", Toast.LENGTH_LONG).show();
-                finish(); //closes activity, returning to main
+                finish(); //closes activity, returning to main without saving
             });
             builder.setNegativeButton("Cancel", (Dialog, id) -> {}); //does nothing. remains in EditActivity
             builder.setMessage("Note will not be saved without a title");
             AlertDialog dialog = builder.create();
             dialog.show();
         }
-        note.setTitle(title);
-        note.setNoteText(text);
-        note.setDateTime(); //takes the current time
+        else if (title.trim().isEmpty() && text.trim().isEmpty()){ //COMPLETELY EMPTY NOTE
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setPositiveButton("Ok", (Dialog, id) -> {finish();});
+            builder.setNegativeButton("Cancel", (Dialog, id) -> {}); //does nothing. remains in EditActivity
+            builder.setMessage("Leave the empty note?");
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+        else { //new title and new noteText
+            nTemp.setTitle(title);
+            nTemp.setNoteText(text);
+            nTemp.setDateTime(); //takes the current time
 
-        Intent data = new Intent();
-        data.putExtra("Note", note);
-        data.putExtra("Position", pos);
+            String key = "NEW_NOTE";
+            Intent intent = getIntent();
+            if(intent.hasExtra("EDIT_NOTE")){
+                key = "UPDATE_NOTE";
+            }
 
-        setResult(RESULT_OK, data);
-        finish();
+            Intent data = new Intent();
+            data.putExtra(key, nTemp);
+            data.putExtra("Note", nTemp);
+            data.putExtra("Position", position);
+            //data.putExtra("Edit?", true);
+
+
+            setResult(RESULT_OK, data);
+            finish();
+        }
 
     }
 
@@ -76,7 +106,6 @@ public class EditActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Your note is not saved!");
         builder.setMessage("Save note?");
-
         builder.setPositiveButton("Yes", (dialog,id) ->{ //approving dialog saves note
             save();
         });
@@ -98,7 +127,7 @@ public class EditActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {// create the menu for the save button
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_2, menu);
         return true;
