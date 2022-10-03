@@ -41,20 +41,21 @@ public class MyAdapter extends RecyclerView.Adapter<NoteViewHolder>{
         String title = note.getTitle();
         String noteText = note.getNoteText();
 
-        if ((title.length() >= 80)){ //title is more than 80 characters
+        if ((title.length() <= 80)){ //title is more than 80 characters
             //first 80 characters will be taken as a substring
-            holder.title.setText(String.format("%s...", title.substring(0,80)));
-        }
-        else{ //title is less than 80 characters
             holder.title.setText(note.getTitle());
         }
+        else{ //title is less than 80 characters
 
-        if (noteText.length() >= 80){ //text is more than 80 characters
+            holder.title.setText(String.format("%s...", title.substring(0,80)));
+        }
+
+        if (noteText.length() <= 80){ //text is more than 80 characters
             //first 80 characters will be taken as a substring
-            holder.summary.setText(String.format("%s...", title.substring(0,80)));
+            holder.summary.setText(note.getNoteText());
         }
         else{ //text is less than 80 characters
-            holder.summary.setText(note.getNoteText());
+            holder.summary.setText(String.format("%s...", noteText.substring(0,80)));
         }
 
         holder.dateTime.setText(note.getDateTime());
