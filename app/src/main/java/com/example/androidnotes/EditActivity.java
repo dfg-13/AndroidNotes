@@ -28,7 +28,6 @@ public class EditActivity extends AppCompatActivity {
         noteText = findViewById(R.id.noteText);
         noteText.setMovementMethod(new ScrollingMovementMethod());//allows for scrolling capability
 
-
         Intent intent = getIntent(); //passing data to a new activity
         if (intent.hasExtra("EDIT_NOTE")){
             editNote = (Note) intent.getSerializableExtra("EDIT_NOTE");
@@ -40,11 +39,6 @@ public class EditActivity extends AppCompatActivity {
         if (intent.hasExtra("Position")){
             position = intent.getIntExtra("position", 0);
         }
-        /*
-        if (intent.hasExtra("NEW_NOTE")){
-            noteChecker = intent.getBooleanExtra("NEW_NOTE", false);
-        }
-         */
     }
 
     public void save(){

@@ -80,7 +80,8 @@ public class MainActivity extends AppCompatActivity
                 noteList.add(0,note);
                 save();
                 mAdapter.notifyItemInserted(0);
-            } else if (data.hasExtra("UPDATE_NOTE")){ //reads if note is being updated then proceeds to move it up the list
+            }
+            else if (data.hasExtra("UPDATE_NOTE")){ //reads if note is being updated then proceeds to move it up the list
                 Note editNote = (Note) data.getSerializableExtra("UPDATE_NOTE");
                 int pos = data.getIntExtra("UPDATE_POS", 0);
 
@@ -123,6 +124,7 @@ public class MainActivity extends AppCompatActivity
         }catch(Exception e){
             e.printStackTrace();
         }
+        Toast.makeText(this, "JSON file loaded", Toast.LENGTH_SHORT).show();
         return noteLst;
     }
 
@@ -160,7 +162,6 @@ public class MainActivity extends AppCompatActivity
                 intent1.putExtra("Note", n);
                 intent1.putExtra("Position", -1);
                 activityResultLauncher.launch(intent1);
-                startActivity(intent1);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -181,7 +182,6 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, EditActivity.class);
         intent.putExtra("EDIT_NOTE", n);
         intent.putExtra("EDIT_POS", pos);
-        //intent.putExtra("New?", false); //clicking on an already existing note, therefore not new
         activityResultLauncher.launch(intent);//using given data access the note
     }
 
