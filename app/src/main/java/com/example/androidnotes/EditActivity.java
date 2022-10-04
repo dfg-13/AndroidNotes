@@ -3,20 +3,14 @@ package com.example.androidnotes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
 
 public class EditActivity extends AppCompatActivity {
 
@@ -58,7 +52,7 @@ public class EditActivity extends AppCompatActivity {
         String text = noteText.getText().toString();
         Note nTemp = new Note(title, text);
 
-        if (title.trim().isEmpty() && !text.isEmpty()){ //no title is present, but there is text
+        if (title.trim().isEmpty()){ //no title is present, but there is text
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setPositiveButton("Ok", (Dialog, id) -> { //Selecting Ok should close the dialog and EditActivity without saving
                 Toast.makeText(this, "Notes with no title are not saved", Toast.LENGTH_LONG).show();
@@ -92,13 +86,13 @@ public class EditActivity extends AppCompatActivity {
             data.putExtra(key, nTemp);
             data.putExtra("Note", nTemp);
             data.putExtra("Position", position);
-            //data.putExtra("Edit?", true);
-
-
+            if (intent.hasExtra("EDIT_POS")){
+                int pos = intent.getIntExtra("EDIT_POS", 0);
+                data.putExtra("UPDATE_POS", pos);
+            }
             setResult(RESULT_OK, data);
             finish();
         }
-
     }
 
     @Override

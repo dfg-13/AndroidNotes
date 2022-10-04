@@ -75,24 +75,25 @@ public class MainActivity extends AppCompatActivity
             if (data == null){
                 return;
             }
-            if (data.hasExtra("NEW_NOTE")){
+            if (data.hasExtra("NEW_NOTE")){//reads if note is new then adds to top of list
                 Note note = (Note) data.getSerializableExtra("Note");
                 noteList.add(0,note);
                 save();
                 mAdapter.notifyItemInserted(0);
-            }
-            /*
-            if (data.getBooleanExtra("New?", false) &&
-            data.getBooleanExtra("Edited?", true)){
-                int val = data.getIntExtra("pos", 0);
-                noteList.remove(val);
-                noteList.add(0,note);
+            } else if (data.hasExtra("UPDATE_NOTE")){ //reads if note is being updated then proceeds to move it up the list
+                Note editNote = (Note) data.getSerializableExtra("UPDATE_NOTE");
+                int pos = data.getIntExtra("UPDATE_POS", 0);
+
+                Note toUpdate = noteList.get(pos);
+                toUpdate.setTitle(editNote.getTitle());
+                toUpdate.setNoteText(editNote.getNoteText());
+                toUpdate.setDateTime(editNote.getDateTime());
+                noteList.remove(pos);
+                noteList.add(0,toUpdate);
                 save();
-                mAdapter.notifyItemMoved(val, 0);
+                mAdapter.notifyItemMoved(pos, 0);
                 mAdapter.notifyItemChanged(0);
             }
-
-             */
         }
     }
 
@@ -178,9 +179,9 @@ public class MainActivity extends AppCompatActivity
         Note n = noteList.get(pos); //fetch position of the note at 'pos' in the list
         //given a position(index) and the index of said note enter the note
         Intent intent = new Intent(this, EditActivity.class);
-        intent.putExtra("Note", n);
-        intent.putExtra("Position", pos);
-        intent.putExtra("New?", false); //clicking on an already existing note, therefore not new
+        intent.putExtra("EDIT_NOTE", n);
+        intent.putExtra("EDIT_POS", pos);
+        //intent.putExtra("New?", false); //clicking on an already existing note, therefore not new
         activityResultLauncher.launch(intent);//using given data access the note
     }
 
